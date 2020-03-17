@@ -21,6 +21,17 @@ var app = (function () {
         ctx.stroke();
     };
     
+    var drawPolygonWithPoints = function(points) {
+    	var canvas = document.getElementById("canvas");
+        var ctx = canvas.getContext("2d");
+        ctx.beginPath();
+        ctx.moveTo(points[0].x, points[0].y);
+        for(var i = 1; i < points.length; i++){
+        	ctx.lineTo(points[i].x, points[i].y);
+        }
+        ctx.closePath();
+        ctx.fill();
+    };
     
     var getMousePosition = function (evt) {
         canvas = document.getElementById("canvas");
@@ -30,7 +41,6 @@ var app = (function () {
             y: evt.clientY - rect.top
         };
     };
-
 
     var connectAndSubscribe = function () {
         console.info('Connecting to WS...');
@@ -44,7 +54,7 @@ var app = (function () {
                 var point=JSON.parse(message.body);
                 console.log(point);
                 addPointToCanvas(point);
-                alert(JSON.stringify(point));
+                //alert(JSON.stringify(point));
                 
             });
         });
@@ -68,7 +78,7 @@ var app = (function () {
             var pt=new Point(px,py);
             console.info("publishing point at "+pt);
             //publicar el evento
-            stompClient.send("/topic/newpoint." + idSuscribirse, {}, JSON.stringify(pt));
+            stompClient.send("/app/newpoint." + idSuscribirse, {}, JSON.stringify(pt));
         },
 
         disconnect: function () {
@@ -77,9 +87,13 @@ var app = (function () {
             }
             setConnected(false);
             console.log("Disconnected");
-        },
+        },        
         connectAndSubscribeToOne: function (id) {
             idSuscribirse = id;
+            if (id == "") {
+                alert("Tiene que suscribirse para empezar a dibujar!");
+                return;
+            }
             console.info('Connecting to WS...');
             var socket = new SockJS('/stompendpoint');
             stompClient = Stomp.over(socket);
@@ -91,12 +105,26 @@ var app = (function () {
                     var point=JSON.parse(message.body);
                     console.log(point);
                     addPointToCanvas(point);
-                    alert(JSON.stringify(point));
+                    //alert(JSON.stringify(point));
                     
+                });
+                stompClient.subscribe('/topic/newpolygon.' + idSuscribirse, function (message) {
+                    var points=JSON.parse(message.body).points;
+                    console.log("PUNTOS -------------------------------------------- " + points);                    
+                    //alert(JSON.stringify(points));
+                    drawPolygonWithPoints(points);
                 });
             });
     
-        }
+        },
+        drawPoint: function() {
+            $("#canvas").click(function(e){
+                var coordenadas = getMousePosition(e);
+                var x = coordenadas.x;
+                var y = coordenadas.y;
+                app.publishPoint(x, y);
+            });
+        },
     };
 
 })();

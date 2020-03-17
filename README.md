@@ -1,4 +1,4 @@
-# ARSW-LAB7
+﻿# ARSW-LAB7
 
 ## Members 
 - **Juan Alberto Mejía Schuster**
@@ -11,7 +11,7 @@ Este ejercicio se basa en la documentación oficial de SprinbBoot, para el manej
 
 En este repositorio se encuentra una aplicación SpringBoot que está configurado como Broker de mensajes, de forma similar a lo mostrado en la siguiente figura:
 
-/todo image
+![](https://github.com/jualme/ARSW-LAB7/blob/master/img/imagen1.png)
 
 En este caso, el manejador de mensajes asociado a "/app" aún no está configurado, pero sí lo está el broker '/topic'. Como mensaje, se usarán puntos, pues se espera que esta aplicación permita progragar eventos de dibujo de puntos generados por los diferentes clientes.
 

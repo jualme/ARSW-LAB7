@@ -37,10 +37,10 @@ var app = (function () {
         stompClient.connect({}, function (frame) {
             console.log('Connected: ' + frame);
             stompClient.subscribe('/topic/newpoint', function (message) {
-                var points=JSON.parse(message.body);
-                console.log(points);
-                addPointToCanvas(points);
-                alert(JSON.stringify(points));
+                var point=JSON.parse(message.body);
+                console.log(point);
+                addPointToCanvas(point);
+                alert(JSON.stringify(point));
                 
             });
         });

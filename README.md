@@ -3,6 +3,16 @@
 ## Members 
 - **Juan Alberto Mejía Schuster**
 - **Johann Sebastian Páez Campos**
+
+## Compile and run
+
+ ```
+ mvn compile
+  ```
+  
+ ```
+ mvn spring-boot:run
+  ```
 # Broker de Mensajes STOMP
 
 ## Descripción
